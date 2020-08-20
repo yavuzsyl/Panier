@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30128.74
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Panier", "Panier\Panier.csproj", "{5E5778CE-3819-4712-9511-DC41BB818B09}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Panier.Core", "Panier.Core\Panier.Core.csproj", "{854982E4-5A77-45CD-90B3-02FA7FC8ABDC}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{5E5778CE-3819-4712-9511-DC41BB818B09}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5E5778CE-3819-4712-9511-DC41BB818B09}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5E5778CE-3819-4712-9511-DC41BB818B09}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5E5778CE-3819-4712-9511-DC41BB818B09}.Release|Any CPU.Build.0 = Release|Any CPU
+		{854982E4-5A77-45CD-90B3-02FA7FC8ABDC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{854982E4-5A77-45CD-90B3-02FA7FC8ABDC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{854982E4-5A77-45CD-90B3-02FA7FC8ABDC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{854982E4-5A77-45CD-90B3-02FA7FC8ABDC}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {C56BB763-FA93-401E-B952-361032D6059A}
+	EndGlobalSection
+EndGlobal
