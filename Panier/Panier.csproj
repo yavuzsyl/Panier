@@ -21,7 +21,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Panier.Core\Panier.Core.csproj" />
+    <ProjectReference Include="..\Panier.Business\Panier.Business.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Installers\" />
   </ItemGroup>
 
 

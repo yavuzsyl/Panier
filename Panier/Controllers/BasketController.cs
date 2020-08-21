@@ -8,11 +8,11 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Panier.Contracts;
-using Panier.Contracts.V1.Requests;
-using Panier.Domain.Entities;
-using Panier.Extension;
-using Panier.Services.Abstract;
+using Panier.Business.Contracts;
+using Panier.Business.Contracts.V1.Requests;
+using Panier.Business.Extensions;
+using Panier.Business.Services.Abstract;
+using Panier.Entities;
 
 namespace Panier.Controllers
 {

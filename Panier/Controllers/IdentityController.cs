@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Panier.Contracts;
-using Panier.Contracts.V1.Requests;
-using Panier.Contracts.V1.Responses;
-using Panier.Services.Abstract;
+using Panier.Business.Contracts;
+using Panier.Business.Contracts.V1.Requests;
+using Panier.Business.Services.Abstract;
 
 namespace Panier.Controllers
 {

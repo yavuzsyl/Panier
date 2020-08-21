@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
-using Panier.Contracts.V1.Responses;
+using Panier.Business.Contracts.V1.Responses;
 using System;
 using System.Collections.Generic;
 using System.Linq;

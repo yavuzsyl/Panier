@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
-using Panier.Contracts.V1.Requests;
-using Panier.Domain.Entities;
-
+using Panier.Business.Contracts.V1.Requests;
+using Panier.Entities;
 
 namespace Panier.Porfiles
 {
