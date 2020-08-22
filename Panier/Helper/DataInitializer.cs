@@ -22,8 +22,7 @@ namespace Panier.Helper
                 if (!ms.Any())
                 {
                     var redisRepository = serviceScope.ServiceProvider.GetRequiredService<IRedisRepository>();
-                    await mongoStatusRepo.CreateMany(
-                      new List<StatusMessage>{
+                    var statusList = new List<StatusMessage>{
                         new StatusMessage{
                             statusCode = 1000,statusMessage = "This advertisement is not active",statusName = "NotActiveAdvertisement" },
                         new StatusMessage{
@@ -32,14 +31,23 @@ namespace Panier.Helper
                             statusCode = 1002,statusMessage = @"Couldn't update basketItem due to unkown resons",statusName = "CouldntUpdateBasketItem" },
                         new StatusMessage{
                             statusCode = 1003,statusMessage = @"Couldn't insert new basketItem due to unkown resons ",statusName = "CouldntInsertBasketItem" },
-                      }
-                  );
-
-                    foreach (var item in ms)
+                      };
+                    try
                     {
-                        await redisRepository.RemoveObjectAsync(item.statusName);
-                        var res = await redisRepository.SetObjectAsync<StatusMessage>(item.statusName, item);
+                        await mongoStatusRepo.CreateMany(statusList);
+                        foreach (var item in statusList)
+                        {
+                            await redisRepository.RemoveObjectAsync(item.statusName);
+                            var res = await redisRepository.SetObjectAsync<StatusMessage>(item.statusName, item);
+                        }
                     }
+                    catch (Exception ex)
+                    {
+
+                        throw ex;
+                    }
+
+
                 }
 
             }

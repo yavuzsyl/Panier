@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Panier.Business.Contracts;
 using Panier.Business.Contracts.V1.Requests;
+using Panier.Business.Contracts.V1.Responses;
 using Panier.Business.Extensions;
 using Panier.Business.Services.Abstract;
 using Panier.Entities;
@@ -30,11 +31,11 @@ namespace Panier.Controllers
         }
 
         [HttpPost(ApiRoutes.Basket.Create)]
-        public async Task<IActionResult> AddToBasket([FromBody, Required] AddToBasketRequestModel postRequest)
+        public async Task<Response<BasketItem>> AddToBasket([FromBody, Required] AddToBasketRequestModel postRequest)
         {
             var currentUserId = HttpContext.GetUserId();
-            var createResult = await basketItemService.AddToBasket(mapper.Map<BasketItem>(postRequest),currentUserId);
-            return Ok(createResult);
+            return await basketItemService.AddToBasket(mapper.Map<BasketItem>(postRequest),currentUserId);
+            
 
         }
     }
