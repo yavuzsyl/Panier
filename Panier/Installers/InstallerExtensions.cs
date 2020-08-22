@@ -9,7 +9,7 @@ namespace Panier.Installers
 {
     public static class InstallerExtensions
     {
-        public static void installServicesInAssembly(this IServiceCollection services, IConfiguration configuration)
+        public static void InstallServicesInAssembly(this IServiceCollection services, IConfiguration configuration)
         {
             var installers = typeof(Startup).Assembly.ExportedTypes.Where(x =>
                   typeof(IInstaller).IsAssignableFrom(x) && !x.IsAbstract && !x.IsAbstract).Select(Activator.CreateInstance).Cast<IInstaller>().ToList();

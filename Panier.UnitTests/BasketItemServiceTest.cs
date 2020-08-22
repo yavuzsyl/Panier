@@ -58,7 +58,7 @@ namespace Panier.UnitTests
         [InlineData("c136d274-a69a-4733-bb0e-985471b05391", 2)]
         public void AddToBasketItem_ShouldReturnBadRequestWithStatusMessage_IfAdvertisementDeletedOrNotActive(string userId, int advertitsementId)
         {
-            mockRedisRepo.Setup(x => x.GetObjectAsync<StatusMessage>("NotActiveAdvertisement")).Returns(Task.FromResult(new StatusMessage { statusMessage = "This advertisement is not active" }));
+            mockRedisRepo.Setup(x => x.GetObjectAsync<StatusMessage>("NotActiveAdvertisement")).Returns(Task.FromResult(new StatusMessage { statusMessage = "This advertisement is not active" ,statusCode = 1000}));
 
             mockAdvertisementService.Setup(x => x.FindEntityById(advertitsementId)).Returns(Task.FromResult(new Response<Advertisement>
            (new Advertisement { IsActive = false, IsDeleted = false })));
@@ -66,7 +66,7 @@ namespace Panier.UnitTests
             var result = basketItemtService.AddToBasket(new BasketItem { AdvertisementId = advertitsementId, Count = 254 }, userId);
 
             Assert.False(result.Result.Success);
-            Assert.Equal(400, result.Result.StatusCode);
+            Assert.Equal(1000, result.Result.StatusCode);
             Assert.Equal("This advertisement is not active", result.Result.Message);
             Assert.Null(result.Result.Result);
         }
@@ -75,7 +75,7 @@ namespace Panier.UnitTests
         [InlineData("c136d274-a69a-4733-bb0e-985471b05391", 1, 250)]
         public void AddToBasketItem_ShouldReturnBadRequestWithStatusMessage_IfRequestedStockMoreThenCurrentStock(string userId, int advertitsementId, int requestedCount)
         {
-            mockRedisRepo.Setup(x => x.GetObjectAsync<StatusMessage>("NotEnoughStockAdvertisement")).Returns(Task.FromResult(new StatusMessage { statusMessage = "Not enough stock for this advertisement" }));
+            mockRedisRepo.Setup(x => x.GetObjectAsync<StatusMessage>("NotEnoughStockAdvertisement")).Returns(Task.FromResult(new StatusMessage { statusMessage = "Not enough stock for this advertisement", statusCode = 1001 }));
 
             mockAdvertisementService.Setup(x => x.FindEntityById(advertitsementId)).Returns(Task.FromResult(new Response<Advertisement>
            (new Advertisement { IsActive = true, IsDeleted = false, UnitsInStock = 100 })));
@@ -83,7 +83,7 @@ namespace Panier.UnitTests
             var result = basketItemtService.AddToBasket(new BasketItem { AdvertisementId = advertitsementId, Count = requestedCount }, userId);
 
             Assert.False(result.Result.Success);
-            Assert.Equal(400, result.Result.StatusCode);
+            Assert.Equal(1001, result.Result.StatusCode);
             Assert.Equal("Not enough stock for this advertisement", result.Result.Message);
             Assert.Null(result.Result.Result);
         }

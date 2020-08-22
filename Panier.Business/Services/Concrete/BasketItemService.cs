@@ -39,45 +39,19 @@ namespace Panier.Business.Services.Concrete
         }
 
 
-        public async Task insert()
-        {
-           await _statusRepository.CreateMany(
-                new List<StatusMessage>{
-                new StatusMessage{
-                    statusCode = 1,statusMessage = "This advertisement is not active",statusName = "NotActiveAdvertisement" },
-                new StatusMessage{
-                    statusCode = 2,statusMessage = "Not enough stock for this advertisement",statusName = "NotEnoughStockAdvertisement" },
-                new StatusMessage{
-                    statusCode = 3,statusMessage = "Couldnt update basketItem due to unkown resons",statusName = "CouldntUpdateBasketItem" },
-                new StatusMessage{
-                    statusCode = 4,statusMessage = "Couldnt insert new basketItem due to unkown resons ",statusName = "CouldntInsertBasketItem" },
-                });
-
-            var ms = await _statusRepository.Get();
-            foreach (var item in ms)
-            {
-                await redisRepository.RemoveObjectAsync(item.statusName);
-                var res = await redisRepository.SetObjectAsync<StatusMessage>(item.statusName,item);
-            }
-           
-        }
-
-
         public async Task<Response<BasketItem>> AddToBasket(BasketItem model, string currentUserId)
         {
 
-            //await insert();
             var advertisement = await advertisementService.FindEntityById(model.AdvertisementId);
 
             if (!advertisement.Success)
-                return new Response<BasketItem>(advertisement.Message);
+                return await ReturnUnkownStatusResponse<BasketItem>(advertisement.Message);
             else if (!advertisement.Result.IsActive || advertisement.Result.IsDeleted)
-                return new Response<BasketItem>((await redisRepository.GetObjectAsync<StatusMessage>("NotActiveAdvertisement")).statusMessage);
+                return await ReturnStatusResponse<BasketItem>("NotActiveAdvertisement");
             else if (advertisement.Result.UnitsInStock < model.Count)
-                return new Response<BasketItem>((await redisRepository.GetObjectAsync<StatusMessage>("NotEnoughStockAdvertisement")).statusMessage);
+                return await ReturnStatusResponse<BasketItem>("NotEnoughStockAdvertisement");
 
 
-            //userId token
             var userBasketItem = await repository.GetByExpression(x => x.AppUserId == currentUserId && !x.IsDeleted && x.AdvertisementId == model.AdvertisementId);
             if (userBasketItem != null)
             {
@@ -88,14 +62,14 @@ namespace Panier.Business.Services.Concrete
                     repository.UpdateEntity(userBasketItem);
                     var result = await unitOfWork.CompleteAsync();
                     if (!result)
-                        return new Response<BasketItem>((await redisRepository.GetObjectAsync<StatusMessage>("CouldntUpdateBasketItem")).statusMessage);//
-                    logger.LogInfo($"Basket Item updated {JsonConvert.SerializeObject(userBasketItem)}");
+                        return await ReturnStatusResponse<BasketItem>("CouldntUpdateBasketItem");
+                    logger.LogInfo($"Basket item successfully updated: {JsonConvert.SerializeObject(userBasketItem)}");
 
                 }
                 catch (Exception ex)
                 {
                     logger.LogError(ex.Message);
-                    return new Response<BasketItem>(ex.Message);
+                    return await ReturnUnkownStatusResponse<BasketItem>(ex.Message);
                 }
 
             }
@@ -106,7 +80,7 @@ namespace Panier.Business.Services.Concrete
                     userBasketItem = new BasketItem
                     {
                         Advertisement = advertisement.Result,
-                        AppUserId = currentUserId, //token id,
+                        AppUserId = currentUserId, 
                         Count = model.Count,
                         TotalPrice = model.Count * advertisement.Result.Price
 
@@ -114,8 +88,8 @@ namespace Panier.Business.Services.Concrete
                     await repository.AddEntity(userBasketItem);
                     var result = await unitOfWork.CompleteAsync();
                     if (!result)
-                        return new Response<BasketItem>((await redisRepository.GetObjectAsync<StatusMessage>("CouldntInsertBasketItem")).statusMessage);//
-                    logger.LogInfo($"Basket Item added {JsonConvert.SerializeObject(userBasketItem)}");
+                        return await ReturnStatusResponse<BasketItem>("CouldntInsertBasketItem");
+                    logger.LogInfo($"Basket item successfully added: {JsonConvert.SerializeObject(userBasketItem)}");
 
 
                 }
@@ -123,7 +97,7 @@ namespace Panier.Business.Services.Concrete
                 {
 
                     logger.LogError(ex.Message);
-                    return new Response<BasketItem>(ex.Message);
+                    return await ReturnUnkownStatusResponse<BasketItem>(ex.Message);
                 }
 
 
@@ -132,6 +106,15 @@ namespace Panier.Business.Services.Concrete
             return new Response<BasketItem>(userBasketItem);
 
         }
+
+        public async Task<Response<T>> ReturnStatusResponse<T>(string key) where T : BaseEntity
+        {
+            var statusModel = await redisRepository.GetObjectAsync<StatusMessage>(key);
+            return new Response<T>(statusModel.statusMessage, statusModel.statusCode);
+        }
+        public async Task<Response<T>> ReturnUnkownStatusResponse<T>(string message) where T : BaseEntity
+          => await Task.Run(() => new Response<T>(message));
+
 
 
     }

@@ -31,7 +31,7 @@ namespace Panier.DataAccess.Repositories.Concrete
 
         public async Task<T> GetByExpression(Expression<Func<T, bool>> expression)
         {
-            return await Task.FromResult(entities.Where(expression).FirstOrDefault());
+            return await entities.Where(expression).FirstOrDefaultAsync();
         }
 
         public async Task<T> GetById(int id)
@@ -49,8 +49,8 @@ namespace Panier.DataAccess.Repositories.Concrete
         public async Task<IQueryable<T>> GetList(Expression<Func<T, bool>> expression)
         {
             if (expression != null)
-                return await Task.FromResult(entities.Where(expression));
-            return await Task.FromResult(entities);
+                return await Task.Run(() => entities.Where(expression));
+            return await Task.Run(() => entities);
         }
 
         public void UpdateEntity(T entity)

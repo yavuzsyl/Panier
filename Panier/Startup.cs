@@ -37,29 +37,15 @@ namespace Panier
 
         public IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
 
-            var mongoDbSettings = new Core.Mongo.MongoDbSettings();
-            Configuration.GetSection(nameof(Core.Mongo.MongoDbSettings)).Bind(mongoDbSettings);
-            services.Configure<Core.Mongo.MongoDbSettings>(options => Configuration.GetSection("MongoDbSettings").Bind(options));
-
-            services.AddSingleton(mongoDbSettings);
-            services.AddSingleton<IMongoDBContext, MongoDBContext>();
-            services.AddScoped<IStatusMessageRepository, StatusMessageRepository>();
-
-            services.installServicesInAssembly(Configuration);
+            services.InstallServicesInAssembly(Configuration);
 
             services.AddControllers();
-            services.AddSingleton<ILoggerManager, LoggerManager>();
+
             services.AddAutoMapper(typeof(Startup));
-
-            var redisSettings = new RedisCacheSettings();
-            Configuration.GetSection(nameof(RedisCacheSettings)).Bind(redisSettings);
-            services.AddSingleton(redisSettings);
-            services.AddSingleton<IRedisConnection, RedisConnection>(q => new RedisConnection(redisSettings.ConnectionString));
-
+            services.AddSingleton<ILoggerManager, LoggerManager>();
             services.AddScoped(typeof(IBaseService<>), typeof(BaseService<>));
             services.AddScoped(typeof(IBaseRepository<>), typeof(BaseRepository<>));
             services.AddScoped<IUnitOfWork, UnitOfWork>();
@@ -67,7 +53,6 @@ namespace Panier
             services.AddScoped<IAdvertisementRepository, AdvertisementRepository>();
             services.AddScoped<IBasketItemService, BasketItemService>();
             services.AddScoped<IAdvertisementService, AdvertisementService>();
-            services.AddTransient<IRedisRepository, RedisRepository>();
 
 
 

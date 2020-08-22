@@ -24,9 +24,5 @@
     <ProjectReference Include="..\Panier.Business\Panier.Business.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Installers\" />
-  </ItemGroup>
-
 
 </Project>
