@@ -14,6 +14,6 @@ RUN dotnet publish ./Panier/*.csproj -o /publish/
 FROM mcr.microsoft.com/dotnet/core/aspnet:3.1
 WORKDIR /app
 COPY --from=build /publish .
-ENV ASPNETCORE_URLS="http://*:5000"
+ENV ASPNETCORE_URLS="http://*:80"
 ENTRYPOINT [ "dotnet","Panier.dll" ]
 
