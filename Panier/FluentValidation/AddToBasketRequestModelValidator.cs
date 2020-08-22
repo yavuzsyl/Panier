@@ -15,7 +15,6 @@ namespace Panier.Business.FluentValidation
             RuleFor(x => x.Count).NotEmpty().WithMessage("Sepet ürün adet bilgisi boş girilimez").Must(x =>
             { return x > 0; }).WithMessage("Sepet ürün adedi 0 dan büyük olmalıdır");
 
-            //gibi
         }
     }
 }

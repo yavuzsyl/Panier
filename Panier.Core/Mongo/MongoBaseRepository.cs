@@ -39,8 +39,6 @@ namespace Panier.Core.Mongo
 
         public void Delete(string id)
         {
-            //ex. 5dc1039a1521eaa36835e541
-
             var objectId = new ObjectId(id);
             _dbCollection.DeleteOneAsync(Builders<TEntity>.Filter.Eq("_id", objectId));
 
@@ -52,8 +50,6 @@ namespace Panier.Core.Mongo
 
         public async Task<TEntity> Get(string id)
         {
-            //ex. 5dc1039a1521eaa36835e541
-
             var objectId = new ObjectId(id);
 
             FilterDefinition<TEntity> filter = Builders<TEntity>.Filter.Eq("_id", objectId);

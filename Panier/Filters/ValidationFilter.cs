@@ -12,7 +12,6 @@ namespace Panier.Filters
     {
         public async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
         {
-            //before controller
 
             if (!context.ModelState.IsValid)
             {
@@ -42,7 +41,6 @@ namespace Panier.Filters
 
             await next();
 
-            //after controller
         }
     }
 

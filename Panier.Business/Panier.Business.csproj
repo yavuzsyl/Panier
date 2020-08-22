@@ -14,6 +14,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Panier.DataAcess\Panier.DataAccess.csproj" />
+    <ProjectReference Include="..\Panier.Entities\Panier.Entities.csproj" />
   </ItemGroup>
 
 </Project>

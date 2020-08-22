@@ -1,14 +1,15 @@
 FROM mcr.microsoft.com/dotnet/core/sdk:3.1 as build
 WORKDIR /app
 COPY ./Panier.Core/*.csproj ./Panier.Core/
-#COPY ./YAPI.IntegrationTest/*.csproj ./YAPI.IntegrationTest/
-#COPY ./Yapi.Sdk/*.csproj ./Yapi.Sdk/
-#COPY ./Yapi.Sdk.Sample/*.csproj ./Yapi.Sdk.Sample/
+COPY ./Panier.Business/*.csproj ./Panier.Business/
+COPY ./Panier.Entities/*.csproj ./Panier.Entities/
+COPY ./Panier.UnitTests/*.csproj ./Panier.UnitTests/
+COPY ./Panier.DataAccess/*.csproj ./Panier.DataAccess/
 COPY ./Panier/*.csproj ./Panier/
 COPY *.sln .
 RUN dotnet restore
 COPY . .
-#RUN dotnet test ./YAPI.IntegrationTest/*.csproj
+RUN dotnet test ./Panier.UnitTests/*.csproj
 RUN dotnet publish ./Panier/*.csproj -o /publish/
 FROM mcr.microsoft.com/dotnet/core/aspnet:3.1
 WORKDIR /app

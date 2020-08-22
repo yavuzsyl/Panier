@@ -18,10 +18,8 @@ namespace Panier.Controllers
         }
 
         [HttpPost(ApiRoutes.Identity.Register)]
-        // [ApiKeyAuth]//herkeşler register olamaz only those who got the apikeys are allowed
         public async Task<IActionResult> Register([FromBody] RegistrationRequestModel request)
         {
-
             var registrationResponse = await identityService.RegisterAsync(request.Email, request.Password);
             if (!registrationResponse.Success)
                 return BadRequest(registrationResponse);
@@ -40,11 +38,6 @@ namespace Panier.Controllers
             return Ok(loginResponse);
         }
 
-        /// <summary>
-        /// the client needs to store the expiry date in the local storage and on every request you need to check if it’s in the past. If it is then you use a middleware to call the refresh endpoint and get a new set of keys.
-        /// </summary>
-        /// <param name="request"></param>
-        /// <returns></returns>
         [HttpPost(ApiRoutes.Identity.Refresh)]
         public async Task<IActionResult> Refresh(RefreshTokenRequestModel request)
         {

@@ -29,6 +29,11 @@ namespace Panier.DataAccess.Repositories.Concrete
             entities.Remove(await GetById(id));
         }
 
+        public async Task<T> GetByExpression(Expression<Func<T, bool>> expression)
+        {
+            return await Task.FromResult(entities.Where(expression).FirstOrDefault());
+        }
+
         public async Task<T> GetById(int id)
         {
             return await entities.FindAsync(id);

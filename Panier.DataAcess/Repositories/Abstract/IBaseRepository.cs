@@ -9,6 +9,7 @@ namespace Panier.DataAccess.Repositories.Abstract
     public interface IBaseRepository<T> where T : class
     {
         Task<T> GetById(int id);
+        Task<T> GetByExpression(Expression<Func<T, bool>> expression);
         Task<IQueryable<T>> GetList(Expression<Func<T, bool>> expression = null);
         Task<int> GetCount(Expression<Func<T, bool>> expression = null);
         Task AddEntity(T entity);

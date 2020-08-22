@@ -41,7 +41,6 @@ namespace Panier
         public void ConfigureServices(IServiceCollection services)
         {
 
-
             var mongoDbSettings = new Core.Mongo.MongoDbSettings();
             Configuration.GetSection(nameof(Core.Mongo.MongoDbSettings)).Bind(mongoDbSettings);
             services.Configure<Core.Mongo.MongoDbSettings>(options => Configuration.GetSection("MongoDbSettings").Bind(options));
@@ -66,7 +65,7 @@ namespace Panier
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<IBasketItemRepository, BasketItemRepository>();
             services.AddScoped<IAdvertisementRepository, AdvertisementRepository>();
-            services.AddScoped<IBasketItemtService, BasketItemtService>();
+            services.AddScoped<IBasketItemService, BasketItemService>();
             services.AddScoped<IAdvertisementService, AdvertisementService>();
             services.AddTransient<IRedisRepository, RedisRepository>();
 

@@ -27,7 +27,7 @@ namespace Panier.Installers
                 opts.Password.RequireUppercase = false;
                 opts.Password.RequireDigit = false;
             })
-                .AddRoles<IdentityRole>()//di for roles
+                .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<PanierContext>();
 
         }

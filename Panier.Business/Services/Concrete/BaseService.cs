@@ -52,18 +52,18 @@ namespace Panier.Business.Services.Concrete
             }
         }
 
-        public async Task<Response<IQueryable<T>>> ListAsync()
+        public async Task<Response<IEnumerable<T>>> ListAsync()
         {
             try
             {
                 var entityList = await repository.GetList();
                 if (entityList == null)
-                    return new Response<IQueryable<T>>($"Not found {typeof(T).Name} ");
-                return new Response<IQueryable<T>>(entityList);
+                    return new Response<IEnumerable<T>>($"Not found {typeof(T).Name} ");
+                return new Response<IEnumerable<T>>(entityList);
             }
             catch (Exception ex)
             {
-                return new Response<IQueryable<T>>($"{typeof(T).Name} 's couldnt list due to : {ex.Message}");
+                return new Response<IEnumerable<T>>($"{typeof(T).Name} 's couldnt list due to : {ex.Message}");
 
             }
         }

@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Panier.Business.Services.Abstract
 {
-    public interface IBasketItemtService : IBaseService<BasketItem>
+    public interface IBasketItemService : IBaseService<BasketItem>
     {
         Task<Response<BasketItem>> AddToBasket(BasketItem model,string currentUserId);
     }

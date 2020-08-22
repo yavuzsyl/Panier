@@ -8,7 +8,7 @@ using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 
-namespace Panier.Installers
+namespace  Panier.Installers
 {
     public class SwggerInstaller : IInstaller
     {
@@ -18,7 +18,6 @@ namespace Panier.Installers
             {
                 s.SwaggerDoc("v1", new OpenApiInfo() { Title = "Panier", Version = "v1" });
 
-                //s.ExampleFilters();//adds example filters
 
                 s.AddSecurityDefinition(name: "Bearer", new OpenApiSecurityScheme
                 {

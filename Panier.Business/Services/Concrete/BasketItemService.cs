@@ -17,7 +17,7 @@ using System.Threading.Tasks;
 
 namespace Panier.Business.Services.Concrete
 {
-    public class BasketItemtService : BaseService<BasketItem>, IBasketItemtService
+    public class BasketItemService : BaseService<BasketItem>, IBasketItemService
     {
         public IAdvertisementService advertisementService;
         public IRedisRepository redisRepository;
@@ -25,7 +25,7 @@ namespace Panier.Business.Services.Concrete
         private readonly IStatusMessageRepository _statusRepository;
 
 
-        public BasketItemtService(IUnitOfWork unitOfWork,
+        public BasketItemService(IUnitOfWork unitOfWork,
             IBasketItemRepository repository,
             IAdvertisementService advertisementService,
             IStatusMessageRepository _statusRepository,
@@ -66,7 +66,7 @@ namespace Panier.Business.Services.Concrete
         public async Task<Response<BasketItem>> AddToBasket(BasketItem model, string currentUserId)
         {
 
-            await insert();
+            //await insert();
             var advertisement = await advertisementService.FindEntityById(model.AdvertisementId);
 
             if (!advertisement.Success)
@@ -78,7 +78,7 @@ namespace Panier.Business.Services.Concrete
 
 
             //userId token
-            var userBasketItem = (await repository.GetList(x => x.AppUserId == currentUserId && !x.IsDeleted && x.AdvertisementId == model.AdvertisementId)).FirstOrDefault();
+            var userBasketItem = await repository.GetByExpression(x => x.AppUserId == currentUserId && !x.IsDeleted && x.AdvertisementId == model.AdvertisementId);
             if (userBasketItem != null)
             {
                 try

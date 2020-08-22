@@ -21,9 +21,9 @@ namespace Panier.Controllers
     public class BasketController : ControllerBase
     {
 
-        private readonly IBasketItemtService basketItemService;
+        private readonly IBasketItemService basketItemService;
         private readonly IMapper mapper;
-        public BasketController(IBasketItemtService postService, IMapper mapper)
+        public BasketController(IBasketItemService postService, IMapper mapper)
         {
             this.basketItemService = postService;
             this.mapper = mapper;

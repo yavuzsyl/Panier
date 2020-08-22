@@ -40,7 +40,6 @@ namespace Panier.Installers
                 ValidateLifetime = true,
                 ClockSkew = TimeSpan.Zero
             };
-            //to reach this added as singleton service to service container
             services.AddSingleton(tokenValidationParameters);
             #endregion
 
@@ -61,10 +60,10 @@ namespace Panier.Installers
             services.AddMvc(options =>
             {
                 options.EnableEndpointRouting = false;
-                options.Filters.Add<ValidationFilter>();//validation filter for modelstate control
+                options.Filters.Add<ValidationFilter>();
 
             }).AddFluentValidation(mvcConfiguration => mvcConfiguration
-                .RegisterValidatorsFromAssemblyContaining<Startup>())//going to register AbstractValidator validators
+                .RegisterValidatorsFromAssemblyContaining<Startup>())
              .SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
 
 
