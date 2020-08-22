@@ -13,8 +13,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Panier.DataAcess\Panier.DataAccess.csproj" />
-    <ProjectReference Include="..\Panier.Entities\Panier.Entities.csproj" />
+    <ProjectReference Include="..\Panier.DataAccess\Panier.DataAccess.csproj" />
   </ItemGroup>
 
 </Project>

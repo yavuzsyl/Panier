@@ -1,5 +1,4 @@
-﻿
-using Panier.DataAccess.Data;
+﻿using Panier.DataAccess.Data;
 using Panier.DataAccess.Repositories.Abstract;
 using Panier.Entities;
 using System;
@@ -9,9 +8,9 @@ using System.Threading.Tasks;
 
 namespace Panier.DataAccess.Repositories.Concrete
 {
-    public class BasketItemRepository : BaseRepository<BasketItem>, IBasketItemRepository
+    public class AdvertisementRepository : BaseRepository<Advertisement>, IAdvertisementRepository
     {
-        public BasketItemRepository(PanierContext context) : base(context)
+        public AdvertisementRepository(PanierContext context) : base(context)
         {
 
         }

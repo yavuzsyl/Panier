@@ -1,5 +1,4 @@
-﻿
-using Panier.DataAccess.Data;
+﻿using Panier.DataAccess.Data;
 using Panier.DataAccess.Repositories.Abstract;
 using System;
 using System.Collections.Generic;

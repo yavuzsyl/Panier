@@ -8,9 +8,9 @@ using System.Threading.Tasks;
 
 namespace Panier.DataAccess.Repositories.Concrete
 {
-    public class AdvertisementRepository :BaseRepository<Advertisement>, IAdvertisementRepository
+    public class BasketItemRepository : BaseRepository<BasketItem>, IBasketItemRepository
     {
-        public AdvertisementRepository(PanierContext context) : base(context)
+        public BasketItemRepository(PanierContext context) : base(context)
         {
 
         }
