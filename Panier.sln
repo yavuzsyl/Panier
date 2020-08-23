@@ -13,7 +13,12 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Panier.Business", "Panier.B
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Panier.Entities", "Panier.Entities\Panier.Entities.csproj", "{80D41B81-ED27-4F66-B7D5-2325DBC8372B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Panier.DataAccess", "Panier.DataAccess\Panier.DataAccess.csproj", "{F5B14035-C526-41A0-BA50-0B87B6B74A1D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Panier.DataAccess", "Panier.DataAccess\Panier.DataAccess.csproj", "{F5B14035-C526-41A0-BA50-0B87B6B74A1D}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{88FEF1B1-F28C-4B39-9D8E-85FAAE82ED3A}"
+	ProjectSection(SolutionItems) = preProject
+		Summary.txt = Summary.txt
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
