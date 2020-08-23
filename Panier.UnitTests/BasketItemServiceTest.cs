@@ -47,10 +47,13 @@ namespace Panier.UnitTests
         [InlineData("c136d274-a69a-4733-bb0e-985471b05391", 10)]
         public void AddToBasketItem_ShouldReturnBadRequest_IfAdvertisementNotExists(string userId, int advertitsementId)
         {
+            //arrange
             mockAdvertisementService.Setup(x => x.FindEntityById(advertitsementId)).Returns(Task.FromResult(new Response<Advertisement>("Not Found")));
 
+            //act
             var result = basketItemtService.AddToBasket(new BasketItem { AdvertisementId = advertitsementId, Count = 254 }, userId);
 
+            //assert
             Assert.False(result.Result.Success);
         }
 
@@ -58,13 +61,16 @@ namespace Panier.UnitTests
         [InlineData("c136d274-a69a-4733-bb0e-985471b05391", 2)]
         public void AddToBasketItem_ShouldReturnBadRequestWithStatusMessage_IfAdvertisementDeletedOrNotActive(string userId, int advertitsementId)
         {
+            //arrange
             mockRedisRepo.Setup(x => x.GetObjectAsync<StatusMessage>("NotActiveAdvertisement")).Returns(Task.FromResult(new StatusMessage { statusMessage = "This advertisement is not active" ,statusCode = 1000}));
 
             mockAdvertisementService.Setup(x => x.FindEntityById(advertitsementId)).Returns(Task.FromResult(new Response<Advertisement>
            (new Advertisement { IsActive = false, IsDeleted = false })));
 
+            //act
             var result = basketItemtService.AddToBasket(new BasketItem { AdvertisementId = advertitsementId, Count = 254 }, userId);
 
+            //assert
             Assert.False(result.Result.Success);
             Assert.Equal(1000, result.Result.StatusCode);
             Assert.Equal("This advertisement is not active", result.Result.Message);
@@ -75,13 +81,16 @@ namespace Panier.UnitTests
         [InlineData("c136d274-a69a-4733-bb0e-985471b05391", 1, 250)]
         public void AddToBasketItem_ShouldReturnBadRequestWithStatusMessage_IfRequestedStockMoreThenCurrentStock(string userId, int advertitsementId, int requestedCount)
         {
+            //arrange
             mockRedisRepo.Setup(x => x.GetObjectAsync<StatusMessage>("NotEnoughStockAdvertisement")).Returns(Task.FromResult(new StatusMessage { statusMessage = "Not enough stock for this advertisement", statusCode = 1001 }));
 
             mockAdvertisementService.Setup(x => x.FindEntityById(advertitsementId)).Returns(Task.FromResult(new Response<Advertisement>
            (new Advertisement { IsActive = true, IsDeleted = false, UnitsInStock = 100 })));
 
+            //act
             var result = basketItemtService.AddToBasket(new BasketItem { AdvertisementId = advertitsementId, Count = requestedCount }, userId);
 
+            //assert
             Assert.False(result.Result.Success);
             Assert.Equal(1001, result.Result.StatusCode);
             Assert.Equal("Not enough stock for this advertisement", result.Result.Message);
@@ -93,6 +102,7 @@ namespace Panier.UnitTests
         [InlineData("9bee167a-34f4-4a56-9de9-07c332b6defd", 1, 10,20)]
         public void AddToBasketItem_ShouldUpdateAndReturnBasketItem_IfUserHasExistingBasketItem(string userId, int advertitsementId, int requestedCount,int existAdvertisementCount)
         {
+            //arrange
             var addToRequest = new BasketItem { AdvertisementId = advertitsementId, Count = requestedCount };
             var advertisement = new Advertisement { Id = 1, IsActive = true, IsDeleted = false, UnitsInStock = 100, Price = 12M };
             mockAdvertisementService.Setup(x => x.FindEntityById(advertitsementId)).Returns(Task.FromResult(new Response<Advertisement>
@@ -102,15 +112,43 @@ namespace Panier.UnitTests
             var basketItems = new List<BasketItem>() { basketItemThatAlreadyExist }.AsQueryable();
             mockbasketItemRepo.Setup(x => x.GetByExpression(It.IsAny<Expression<Func<BasketItem, bool>>>())).Returns(Task.FromResult(basketItems.FirstOrDefault()));
 
-
-
             mockUnitOfWork.Setup(x => x.CompleteAsync()).Returns(Task.FromResult(true));
 
-            var result = basketItemtService.AddToBasket(new BasketItem { AdvertisementId = advertitsementId, Count = requestedCount }, userId);
+            //act
+            var result = basketItemtService.AddToBasket(addToRequest, userId);
 
+            //assert
             Assert.True(result.Result.Success);
             Assert.Equal(200, result.Result.StatusCode);
             Assert.Equal(existAdvertisementCount + addToRequest.Count, result.Result.Result.Count);
+            Assert.Equal(result.Result.Result.Count * advertisement.Price, result.Result.Result.TotalPrice);
+
+        }
+            
+        [Theory]
+        [InlineData("9bee167a-34f4-4a56-9de9-07c332b6defd", 5, 10)]
+        public void AddToBasketItem_ShouldInsertAndReturnBasketItem_IfUserDoesntHaveExistingBasketItem(string userId, int advertitsementId, int requestedCount)
+        {
+            //arrange
+            var addToRequest = new BasketItem { AdvertisementId = advertitsementId, Count = requestedCount };
+
+            var advertisement = new Advertisement { Id = 1, IsActive = true, IsDeleted = false, UnitsInStock = 100, Price = 12M };
+
+            mockAdvertisementService.Setup(x => x.FindEntityById(advertitsementId)).Returns(Task.FromResult(new Response<Advertisement>
+           (advertisement)));
+
+            BasketItem basketItem = null;
+            mockbasketItemRepo.Setup(x => x.GetByExpression(It.IsAny<Expression<Func<BasketItem, bool>>>())).Returns(Task.FromResult(basketItem));
+
+            mockUnitOfWork.Setup(x => x.CompleteAsync()).Returns(Task.FromResult(true));
+
+            //act
+            var result = basketItemtService.AddToBasket(addToRequest, userId);
+
+            //assert
+            Assert.True(result.Result.Success);
+            Assert.Equal(200, result.Result.StatusCode);
+            Assert.Equal( addToRequest.Count, result.Result.Result.Count);
             Assert.Equal(result.Result.Result.Count * advertisement.Price, result.Result.Result.TotalPrice);
         }
     }
