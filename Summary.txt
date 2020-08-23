@@ -1,4 +1,44 @@
-﻿Projede Kullanılan Teknolojiler ve Uygulamalar
+﻿----------------------------------
+api uygulama url => https://panier.azurewebsites.net/swagger/index.html
+
+TEST İÇİN =>
+register olduktan sonra gelen token ile veya loginden sonra gelen token ile authoreize olup basket endpointi üzerinden istek atılabilir
+
+basket endpointi için request modeller => 
+{
+  "advertisementId": 1,
+  "count": 24
+} ile normal ekleme yapılabilir, count adedi 100 den fazla girilirse stok yetersizliği için test edilebilir
+{
+  "advertisementId": 2,
+  "count": 24
+} ile aktif olmayan ilan durumu
+
+{
+  "advertisementId": 3,
+  "count": 24
+} ile olmayan ilan durumu
+
+------------------------------------------------------------------------------------------------
+
+# sepetin ayrı ayrı kalemlerden oluştuğunu düşünüp her kalemin 1 satıcı ve satıcının 1 ilanına denk gelecek şekilde kurgulanıp, bu yapı üzerinden geliştirme yapıldı.
+sepete ekleme işlemi kalem bazında akış olacak şekilde geliştirildi.
+
+Akış => Alıcının basketItem'lardan oluşan bir sepeti var. Alıcı ilanı sepete ekleme işlemi ile basketItem üzerinde güncelleme veya yeni bir basketItem kaydı oluşturarak sepete ürün ekleme işlemini gerçekleştirir.
+
+Domain=>
+
+AppUser => kullanıcının 1 den fazla Advertisementı(ilanı) ve 1 den fazla sepet ürünü(basketItem)
+olabilir.
+
+Advertisement => ilanın 1 tane ürünü(product) vardır İlanın sadece 1 tane satıcısı(AppUser) vardır.
+
+Product => ürünün 1 den fazla ilanı olabilir
+
+BasketItem => 1 tane Kullanıcısı-Alıcı (AppUser) ve 1 tane ilanı vardır.
+---------------------------------------------------------------------------------------------
+Projede Kullanılan Teknolojiler ve Uygulamalar
+
 Azure => Redis Cache server
 Azure => SQL Server
 Azure => MSSQL DB
@@ -13,20 +53,3 @@ Unit Tests => XUnit
 Docker
 JWT token 
 Swagger
-----------------------------------
-api uygulama url => https://panier.azurewebsites.net/swagger/index.html
-
-register olduktan sonra gelen token ile veya loginden sonra gelen token ile authoreize olup basket endpointi üzerinden istek atılabilir
-# sepetin ayrı ayrı kalemlerden oluştuğunu düşünüp her kalemin 1 satıcı ve satıcının 1 ilanına denk gelecek şekilde kurgulanıp, bu yapı üzerinden geliştirme yapıldı.
-sepete ekleme işlemi kalem bazında akış olacak şekilde geliştirildi.
-
-Akış => Alıcının basketItem'lardan oluşan bir sepeti var. Alıcı ilanı sepete ekleme işlemi ile basketItem üzerinde güncelleme veya yeni bir basketItem kaydı oluşturarak sepete ürün ekleme işlemini gerçekleştirir.
-
-AppUser => kullanıcının 1 den fazla Advertisementı(ilanı) ve 1 den fazla sepet ürünü(basketItem)
-olabilir.
-
-Advertisement => ilanın 1 tane ürünü(product) vardır İlanın sadece 1 tane satıcısı(AppUser) vardır.
-
-Product => ürünün 1 den fazla ilanı olabilir
-
-BasketItem => 1 tane Kullanıcısı-Alıcı (AppUser) ve 1 tane ilanı vardır.

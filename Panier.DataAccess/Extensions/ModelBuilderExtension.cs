@@ -32,7 +32,18 @@ namespace Panier.DataAccess.Extensions
                 UnitsInStock = 100,
                 SellerId = "9bee167a-34f4-4a56-9de9-07c332b6defd"
 
-            });
+            },
+            new Advertisement
+            {
+                Id = 2,
+                Price = 1.0m,
+                ProductId = 1,
+                UnitsInStock = 100,
+                SellerId = "9bee167a-34f4-4a56-9de9-07c332b6defd",
+                IsActive = false
+
+            }
+            );
         }
     }
 }
