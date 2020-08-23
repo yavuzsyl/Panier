@@ -26,7 +26,9 @@ namespace Panier.Business.Services.Concrete
             try
             {
                 await repository.AddEntity(entity);
-                await unitOfWork.CompleteAsync();
+                var result = await unitOfWork.CompleteAsync();
+                if (!result)
+                    return new Response<T>($"{typeof(T).Name} couldnt add due to unknown reasons");
                 return new Response<T>(entity);
             }
             catch (Exception ex)
@@ -77,12 +79,15 @@ namespace Panier.Business.Services.Concrete
                 if (entity == null)
                     return new Response<T>($"Not found {typeof(T).Name} ");
                 await repository.DeleteEntity(id);
-                await unitOfWork.CompleteAsync();
+                var result = await unitOfWork.CompleteAsync();
+                if (!result)
+                    return new Response<T>($"{typeof(T).Name} 's couldn't remove due to unknown reasons");
+
                 return new Response<T>(entity);
             }
             catch (Exception ex)
             {
-                return new Response<T>($"{typeof(T).Name} 's couldnt list due to : {ex.Message}");
+                return new Response<T>($"{typeof(T).Name} 's couldn't remove due to : {ex.Message}");
             }
         }
 
@@ -91,12 +96,14 @@ namespace Panier.Business.Services.Concrete
             try
             {
                 repository.UpdateEntity(entity);
-                await unitOfWork.CompleteAsync();
+                var result = await unitOfWork.CompleteAsync();
+                if (!result)
+                    return new Response<T>($"{typeof(T).Name} 's couldn't update due to unknown reasons");
                 return new Response<T>(entity);
             }
             catch (Exception ex)
             {
-                return new Response<T>($"Update {typeof(T).Name}  failed due to : {ex.Message}");
+                return new Response<T>($"Update {typeof(T).Name} failed due to : {ex.Message}");
 
             }
         }

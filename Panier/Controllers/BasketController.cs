@@ -35,8 +35,7 @@ namespace Panier.Controllers
         {
             var currentUserId = HttpContext.GetUserId();
             return await basketItemService.AddToBasket(mapper.Map<BasketItem>(postRequest),currentUserId);
-            
-
+           
         }
     }
 }

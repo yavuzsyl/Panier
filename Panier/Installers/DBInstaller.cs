@@ -18,7 +18,7 @@ namespace Panier.Installers
         {
 
             services.AddDbContextPool<PanierContext>(options =>
-            options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
+            options.UseSqlServer(configuration.GetConnectionString("PanierConnection")));
             services.AddDefaultIdentity<AppUser>(opts => {
                 opts.User.RequireUniqueEmail = true;
                 opts.Password.RequiredLength = 4;

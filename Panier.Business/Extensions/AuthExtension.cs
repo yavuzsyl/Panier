@@ -9,7 +9,7 @@ namespace Panier.Business.Extensions
     public static class AuthExtension
     {
         /// <summary>
-        /// Returns id claim from tokens payload
+        /// Get user id from tokens payload / Kullanıcı id bilgisini token payloadundan getir 
         /// </summary>
         /// <param name="httpContext"></param>
         /// <returns></returns>

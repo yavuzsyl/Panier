@@ -21,8 +21,7 @@ using Panier.DataAccess.Repositories.Concrete;
 using Panier.Business.Options;
 using Microsoft.Extensions.Options;
 using Panier.Core.Mongo;
-using Panier.Business.Services.Abstract.Mongo;
-using Panier.Business.Services.Concrete.Mongo;
+
 
 namespace Panier
 {
@@ -58,7 +57,6 @@ namespace Panier
 
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())

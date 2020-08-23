@@ -21,12 +21,13 @@ namespace Panier.Installers
     {
         public void InstallServices(IServiceCollection services, IConfiguration configuration)
         {
-            #region settings
+            #region jwt settings
             var jwtSettings = new JwtSettings();
             configuration.Bind(key: nameof(jwtSettings), jwtSettings);
             services.AddSingleton(jwtSettings);
             services.Configure<JwtSettings>(configuration.GetSection("jwtsettings"));
             #endregion
+
             services.AddScoped<IIdentityService, IdentityService>();
 
             #region token validation parameters

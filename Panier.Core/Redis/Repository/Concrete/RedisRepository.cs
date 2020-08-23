@@ -10,13 +10,9 @@ namespace Panier.Core.Redis.Repository.Concrete
 {
     public class RedisRepository : IRedisRepository
     {
-        #region Fields
 
-        #region Connection Services
         private readonly IRedisConnection redisCon;
-        #endregion
 
-        #endregion
 
         #region Constructor
         public RedisRepository(IRedisConnection redisCon) => this.redisCon = redisCon;

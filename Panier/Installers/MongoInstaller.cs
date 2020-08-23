@@ -1,8 +1,9 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Panier.Business.Services.Abstract.Mongo;
-using Panier.Business.Services.Concrete.Mongo;
+
 using Panier.Core.Mongo;
+using Panier.DataAccess.Repositories.Abstract.Mongo;
+using Panier.DataAccess.Repositories.Concrete.Mongo;
 using System;
 using System.Collections.Generic;
 using System.Linq;

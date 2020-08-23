@@ -39,7 +39,6 @@ namespace Panier.Business.Services.Concrete
             this.tokenValidationParameters = tokenValidationParameters;
             this.dataContext = dataContext;
         }
-        //public static int counter = 0; used to add roles to user 
         public async Task<AuthenticationResponse> LoginAsync(string email, string password)
         {
             var user = await userManager.FindByEmailAsync(email);
@@ -50,15 +49,7 @@ namespace Panier.Business.Services.Concrete
             if (!userHasValidPassword)
                 return new AuthenticationResponse { Errors = new[] { "password is invalid" } };
 
-            //if (counter == 0)
-            //{
-            //await userManager.AddToRoleAsync(user, "Admin");
-            //    counter++;
-            //}
-            //else
-            //await userManager.AddToRoleAsync(user, "Poster");
-
-
+            //generate token
             return await GetAuthenticationResultAsync(user);
         }
 
@@ -99,7 +90,8 @@ namespace Panier.Business.Services.Concrete
             return await GetAuthenticationResultAsync(user);
 
         }
-        //token generate edeck refreshtoken guid olarakauto generate olacak db ye atılacak refreshtokenın jwtId si tokenın payloadundaki jti olacak , yeni token almaya geldiğinde refresh token ile token valid mi ona bakılacak daha sonra refresh token db de var mı diğer kontroller ve refresh tokenın jwtid tokeninki ile aynı mı aynı ise ok yeni token dönecek yeni refresh token ile
+
+        //token generate edilecek refresh token guid olarak auto generate olacak db ye atılacak refresh tokenın jwtId si tokenın payloadundaki jti olacak , yeni token almaya geldiğinde refresh token ile token valid mi ona bakılacak daha sonra refresh token db de var mı diğer kontroller ve refresh tokenın jwtid tokeninki ile aynı mı? aynı ise ok yeni token dönecek yeni refresh token ile
         /// <summary>
         /// validates given token is valid
         /// </summary>
@@ -125,6 +117,11 @@ namespace Panier.Business.Services.Concrete
 
         }
 
+        /// <summary>
+        /// check if token algorithm is correct
+        /// </summary>
+        /// <param name="validatedToken"></param>
+        /// <returns></returns>
         private bool IsJwtWithValidSecurityAlgorithm(SecurityToken validatedToken)
         {
             return (validatedToken is JwtSecurityToken jwtSecurityToken) &&
@@ -145,12 +142,9 @@ namespace Panier.Business.Services.Concrete
                 UserName = email
             };
 
-            var createdUser = await userManager.CreateAsync(newUser, password);//gonna hash this pass mofo
+            var createdUser = await userManager.CreateAsync(newUser, password);
             if (!createdUser.Succeeded)
                 return new AuthenticationResponse { Errors = createdUser.Errors.Select(x => x.Description) };
-
-            //added claim for policy authorization
-            //await userManager.AddClaimAsync(newUser, new Claim(type: "tags.view", "true"));
 
             //token
             return await GetAuthenticationResultAsync(newUser);
@@ -161,7 +155,7 @@ namespace Panier.Business.Services.Concrete
             var tokenHandler = new JwtSecurityTokenHandler();
             var securityKey = Encoding.UTF8.GetBytes(options.SecretKey);
 
-
+            //generate claims for token payload
             var claims = new List<Claim>()
             {
                 new Claim(type: JwtRegisteredClaimNames.Sub, value: user.Email),

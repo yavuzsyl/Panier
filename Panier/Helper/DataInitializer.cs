@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Panier.Business.Services.Abstract.Mongo;
 using Panier.Core.Redis.Repository.Abstract;
+using Panier.DataAccess.Repositories.Abstract.Mongo;
 using Panier.Entities.Mongo;
 using System;
 using System.Collections.Generic;
@@ -10,8 +10,14 @@ using System.Threading.Tasks;
 
 namespace Panier.Helper
 {
+
     public static class DataInitializer
     {
+        /// <summary>
+        /// Insert status message informations to mongo db and cache to redis / status mesaj bilgilierini mongoya kaydetme ve redis'e setleme
+        /// </summary>
+        /// <param name="host"></param>
+        /// <returns></returns>
         public static async Task RedisCacheInitialzier(IHost host)
         {
             using (var serviceScope = host.Services.CreateScope())

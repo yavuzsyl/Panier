@@ -5,12 +5,12 @@ using System.Threading.Tasks;
 
 namespace Panier.Business.Contracts.V1.Responses
 {
-    public class ErrorResponse
+    public class ModelStateErrorResponse
     {
-        public List<ErrorModel> Errors { get; set; } = new List<ErrorModel>();
+        public List<ModelStateErrorModel> Errors { get; set; } = new List<ModelStateErrorModel>();
     }
 
-    public class ErrorModel
+    public class ModelStateErrorModel
     {
         public string FieldName { get; set; }
         public string Message { get; set; }

@@ -1,11 +1,11 @@
-﻿using Panier.Business.Services.Abstract.Mongo;
-using Panier.Core.Mongo;
+﻿using Panier.Core.Mongo;
+using Panier.DataAccess.Repositories.Abstract.Mongo;
 using Panier.Entities.Mongo;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Panier.Business.Services.Concrete.Mongo
+namespace Panier.DataAccess.Repositories.Concrete.Mongo
 {
     public class StatusMessageRepository : MongoBaseRepository<StatusMessage>, IStatusMessageRepository
     {
